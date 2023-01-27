@@ -4,7 +4,11 @@ const loginUser = async(req, res)=>{
 }
 
 const signupUser = async(req, res)=>{
-    res.status(200).json({message: 'Add a user'})
+    try{
+        res.status(200).json({message: 'Add a user'})
+    }catch(error){
+        res.status(400).json({message: error.message})
+    }
 }
 
 const updateUser = async(req, res)=>{
