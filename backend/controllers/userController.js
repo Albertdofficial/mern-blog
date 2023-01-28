@@ -1,22 +1,29 @@
+const User = require('../models/userModel')
+const asyncHandler = require('express-async-handler')
 
-const loginUser = async(req, res)=>{
-    res.status(200).json({message: 'Get a user'})
-}
+const getUsers =  asyncHandler(async(req, res)=>{
+    res.status(200).json({message: 'Get all users'})
+})
 
-const signupUser = async(req, res)=>{
-    try{
-        res.status(200).json({message: 'Add a user'})
-    }catch(error){
-        res.status(400).json({message: error.message})
-    }
-}
+const loginUser =  asyncHandler(async(req, res)=>{
+    res.status(200).json({message: 'Login a user'})
+})
 
-const updateUser = async(req, res)=>{
+const signupUser =  asyncHandler(async(req, res, next)=>{
+        if(!req.body.text){
+            res.status(400)
+            throw new Error('Please add a text field')
+        }else{
+            res.status(200).json({message: 'Signun a User'})
+        }
+})
+
+const updateUser =  asyncHandler(async(req, res)=>{
     res.status(200).json({message: 'Update a user'})
-}
+})
 
-const deleteUser = async(req, res)=>{
+const deleteUser =  asyncHandler(async(req, res)=>{
     res.status(200).json({message: 'Delete a user'})
-}
+})
 
-module.exports = {loginUser, signupUser, updateUser, deleteUser}
+module.exports = {loginUser, signupUser, updateUser, deleteUser, getUsers}
