@@ -1,21 +1,39 @@
 const User = require('../models/userModel')
 const asyncHandler = require('express-async-handler')
+const jwt = require('jsonwebtoken')
 
+const createToken = (_id)=>{
+    return jwt.sign({_id}, process.env.SECRET)
+}
+
+// desc    logins in a user
+// @route  /api/user/login
+// method POST
 const getUsers =  asyncHandler(async(req, res)=>{
     res.status(200).json({message: 'Get all users'})
 })
 
 const loginUser =  asyncHandler(async(req, res)=>{
-    res.status(200).json({message: 'Login a user'})
+    const{email, password} = req.body
+
+    const user = await User.login(email, password)
+
+    const token = createToken(user._id)
+
+    res.status(200).json({user, token})
 })
 
+// @desc    signs up a new user
+// route  /api/user/signup
+// method POST
 const signupUser =  asyncHandler(async(req, res, next)=>{
-        if(!req.body.text){
-            res.status(400)
-            throw new Error('Please add a text field')
-        }else{
-            res.status(200).json({message: 'Signun a User'})
-        }
+       const{username, email, password} = req.body
+
+       const user = await User.signup(username, email, password)
+
+       const token = createToken(user._id)
+
+       res.status(200).json({user, token})
 })
 
 const updateUser =  asyncHandler(async(req, res)=>{
