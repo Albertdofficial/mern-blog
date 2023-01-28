@@ -10,7 +10,10 @@ const createToken = (_id)=>{
 // @route  /api/user/login
 // method POST
 const getUsers =  asyncHandler(async(req, res)=>{
-    res.status(200).json({message: 'Get all users'})
+    
+    const users = await User.find({})
+
+    res.status(200).json(users)
 })
 
 const loginUser =  asyncHandler(async(req, res)=>{
@@ -20,7 +23,7 @@ const loginUser =  asyncHandler(async(req, res)=>{
 
     const token = createToken(user._id)
 
-    res.status(200).json({user, token})
+    res.status(200).json({email, token})
 })
 
 // @desc    signs up a new user
@@ -33,7 +36,7 @@ const signupUser =  asyncHandler(async(req, res, next)=>{
 
        const token = createToken(user._id)
 
-       res.status(200).json({user, token})
+       res.status(200).json({username, email, token})
 })
 
 const updateUser =  asyncHandler(async(req, res)=>{
